@@ -1,4 +1,4 @@
-
+//213073497 Ariel Elbaz
 	.section	.rodata
 	.align 8
 number:  .string "%d"
@@ -13,67 +13,62 @@ printStr:	.string "%s\n"
 .globl	run_main
 	.type	run_main, @function
 run_main:
-    #push the frame pointer
-    pushq	%rbp
-    #set the frame pointer to the stack pointer
-    movq  %rsp, %rbp
+    pushq	%rbp     #push the frame pointer
+    movq    %rsp, %rbp      #set the frame pointer to the stack pointer
 
-    subq	$256, %rsp
+    subq	$256, %rsp      #allocate 256 bytes of stack space
     #get the lentgh of pstring1
- ########################################################################################################
-    movq    %rsp, %rsi     # load address of buffer
-    movq    $number, %rdi  # load format string
-    movq    $0, %rax      # load 0 into rax
-    call    scanf       # call scanf
+#############################################################################################################
+    movq    %rsp, %rsi      # load address of buffer
+    movq    $number, %rdi   # load format string
+    movq    $0, %rax        # load 0 into rax
+        call    scanf           # call scanf
 
 
    #get the string of pstring2
-#########################################################################################################
-    xorq   %rax, %rax
-    movq    $string, %rdi  # load format string
-    leaq    1(%rsp), %rsi     # load address of buffer
-    call    scanf
-    xorq    %rax, %rax
-    leaq    1(%rsp), %rax # load rsp + 1 address into rax
-    addb    (%rsp) , %al # add the length of p1string to rax pointer
-    movb    $0 , (%rax)  # add Null to the end of p1string
+#############################################################################################################
+    xorq   %rax, %rax           # Clear rax
+    movq    $string, %rdi       # load format string
+    leaq    1(%rsp), %rsi       # load address of buffer
+        call    scanf               # call scanf to read string
+    xorq    %rax, %rax          # Clear rax
+    leaq    1(%rsp), %rax       # load rsp + 1 address into rax
+    addb    (%rsp) , %al        # add the length of p1string to rax pointer
+    movb    $0 , (%rax)         # add Null to the end of p1string
 
 #############################################################################################################
-    subq	$256, %rsp
+    subq	$256, %rsp          #allocate 256 bytes of stack space
     #get the lentgh of pstring2
- ########################################################################################################
-    movq    %rsp, %rsi     # load address of buffer
-    movq    $number, %rdi  # load format string
-    movq    $0, %rax      # load 0 into rax
-    call    scanf       # call scanf
-
-
-#########################################################################################################
+#############################################################################################################
+    movq    %rsp, %rsi          # load address of buffer
+    movq    $number, %rdi       # load format string
+    movq    $0, %rax            # load 0 into rax
+        call    scanf               # call scanf
 
    #get the string of pstring2
 #########################################################################################################
-    xorq   %rax, %rax
-    movq    $string, %rdi  # load format string
-    leaq    1(%rsp), %rsi     # load address of buffer
-    call    scanf
-    xorq    %rax, %rax
-    leaq    1(%rsp), %rax # load rsp + 1 address into rax
-    addb    (%rsp) , %al # add the length of p1string to rax pointer
-    movb    $0 , (%rax)  # add Null to the end of p1string
+    xorq   %rax, %rax           # Clear rax
+    movq    $string, %rdi       # load format string
+    leaq    1(%rsp), %rsi       # load address of rsp + 1 into rsi
+    call    scanf               # call scanf to read string2
+    xorq    %rax, %rax          # Clear rax
+    leaq    1(%rsp), %rax       # load rsp + 1 address into rax
+    addb    (%rsp) , %al        # add the length of p1string to rax pointer
+    movb    $0 , (%rax)         # add Null to the end of p1string
 
    # read the option
 #############################################################################################################
-    subq	$16, %rsp
-    xorq   %rax, %rax
-    movq   %rsp, %rsi    # load address of buffer
-    movq    $numberInt, %rdi  # load format string
-       call    scanf
+    subq	$16, %rsp           #allocate 16 bytes of stack space
+    xorq   %rax, %rax           # Clear rax
+    movq   %rsp, %rsi           # load value of rsp into rsi
+    movq    $numberInt, %rdi    # load format string
+       call    scanf            # call scanf to read option
 
 #############################################################################################################
-    movb  (%rsp), %dl # passing the option , third parameter
-    leaq  16(%rsp)  , %rsi #passing second psring2 , second parmeter
-    leaq  272(%rsp) , %rdi #passing first pstring1 , first parameter
-    xorq %rax, %rax
+movq (%rsp), %rsi
+    movzbq %sil , %rdi                    # option  first parameter
+    leaq  272(%rsp)  , %rsi #passing second psring1 , second parmeter
+    leaq  16(%rsp) , %rdX #passing first pstring2 , third parmeter
     call  run_func
 #########################################################################################################
 
